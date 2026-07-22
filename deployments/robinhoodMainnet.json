@@ -1,0 +1,10 @@
+{
+  "network": "robinhoodMainnet",
+  "chainId": 4663,
+  "deployer": "0x2317d8B3a1Dd17C524b160b664A3F56637Bb26f4",
+  "treasury": "0x3F8b972874683710120ad5122116b2574814bD06",
+  "paymentToken": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+  "vellichorVault": "0x78a3C6BDfc720E7095b3DD561bADA37D97c09645",
+  "vellichorMarket": "0x98EA3EFCba914496310DcC56F351dDe04995C395",
+  "deployedAt": "2026-07-21T11:19:45.479Z"
+}

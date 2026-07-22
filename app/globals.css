@@ -1,26 +1,103 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f7f4ee;
+  --panel: #ffffff;
+  --panel-2: #fbf8f2;
+  --ink: #221c15;
+  --ink-dim: #6e6252;
+  --amber: #b9722e;
+  --amber-deep: #8f5a22;
+  --wine: #6b1e2b;
+  --gold: #a6893f;
+  --line: #e6ded0;
+
+  --black: #1a1611;
+  --black-2: #2c2419;
+  --ink-on-black: #ede3d0;
+  --ink-on-black-dim: #a89a83;
+  --line-on-black: #2c2419;
+
+  --code-bg: #f0ebe0;
+}
+
+.docs-dark {
+  --bg: #16130f;
+  --panel: #1e1a14;
+  --panel-2: #1e1a14;
+  --ink: #f2ede1;
+  --ink-dim: #a89a83;
+  --line: #2c2419;
+  --amber-deep: #dc8a37;
+  --code-bg: #26201a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-ink: var(--ink);
+  --color-ink-dim: var(--ink-dim);
+  --color-amber: var(--amber);
+  --color-amber-deep: var(--amber-deep);
+  --color-wine: var(--wine);
+  --color-gold: var(--gold);
+  --color-line: var(--line);
+
+  --color-black: var(--black);
+  --color-black-2: var(--black-2);
+  --color-ink-on-black: var(--ink-on-black);
+  --color-ink-on-black-dim: var(--ink-on-black-dim);
+  --color-line-on-black: var(--line-on-black);
+
+  --color-code-bg: var(--code-bg);
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+  --font-data: var(--font-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 17px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+p {
+  line-height: 1.75;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--panel);
+}
+
+.eyebrow {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
 }

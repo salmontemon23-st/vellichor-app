@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Robinhood Wallet">
+  <rect width="32" height="32" rx="8" fill="#221C15" />
+  <path
+    d="M8 12a2 2 0 0 1 2-2h12a1 1 0 0 1 1 1v1H10a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-3.5a2.5 2.5 0 0 0 0 5H23"
+    fill="none"
+    stroke="#F2EDE1"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

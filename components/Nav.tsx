@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/market", label: "Market" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/about", label: "About" },
+  { href: "/docs", label: "Docs" },
 ];
 
 export function Nav() {

@@ -58,9 +58,14 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/docs" className="text-ink-on-black-dim transition-colors hover:text-ink-on-black">
-                    Docs
-                  </Link>
+                  <a
+                    href="https://github.com/vellichorprotocol/vellichor-app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-ink-on-black-dim transition-colors hover:text-ink-on-black"
+                  >
+                    GitHub
+                  </a>
                 </li>
               </ul>
             </div>
@@ -114,31 +119,6 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-line-on-black pt-8 text-xs leading-relaxed text-ink-on-black-dim">
-          <p>
-            Vellichor Vault Units represent a fractional beneficial interest in a specific
-            physical bottle held in insured third-party custody. They are not shares, equity, or
-            debt of Vellichor, and are not part of any registered securities offering — depending
-            on jurisdiction, they may nonetheless be treated as securities.
-          </p>
-          <p>
-            Redemption for the physical bottle requires identity verification and is subject to
-            local alcohol import and export regulations. Redemption may not be available in all
-            regions.
-          </p>
-          <p>
-            Vellichor is an independent protocol and is not affiliated with, endorsed by, or a
-            product of Robinhood Markets, Inc.
-          </p>
-          <p>
-            Smart contracts, custody arrangements, and market prices all carry risk, including
-            the risk of loss. Nothing on this site is investment, legal, or tax advice.
-          </p>
-        </div>
-
-        <div className="mt-6 border-t border-line-on-black pt-6">
-          <p className="font-data text-xs tracking-wide text-ink-on-black-dim">© 2026 Vellichor · vellichor.xyz</p>
-        </div>
       </div>
     </footer>
   );

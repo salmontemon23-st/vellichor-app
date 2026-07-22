@@ -13,6 +13,8 @@ export const DOCS_NAV: DocsNavGroup[] = [
     title: "Product",
     items: [
       { href: "/docs/vault-units", label: "How Vault Units work" },
+      { href: "/docs/why-vellichor", label: "Why Vellichor" },
+      { href: "/docs/why-hold-vault-units", label: "Why Hold Vault Units" },
       { href: "/docs/vault", label: "The Vault" },
       { href: "/docs/market", label: "The Market" },
       { href: "/docs/redemption", label: "Redemption" },

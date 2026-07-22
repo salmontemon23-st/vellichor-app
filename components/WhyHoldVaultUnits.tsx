@@ -1,20 +1,10 @@
+import Link from "next/link";
+
 const FEATURES = [
-  {
-    title: "Can you exit before an auction cycle ends? Yes.",
-    body: "Vault Units trade on the Market 24/7. There's no waiting on a buyer, a house's calendar, or a settlement window — you list, and it's live.",
-  },
-  {
-    title: "Do you need the price of a full bottle? No.",
-    body: "Units are priced individually, so you can hold a stake in a rare bottle at whatever size fits your budget, not the bottle's full market price.",
-  },
-  {
-    title: "Is there a real bottle behind every unit? Always.",
-    body: "Each Vault Unit is backed 1:1 by a bottle that's already authenticated and in insured custody before it's ever listed — nothing is sold ahead of the physical asset.",
-  },
-  {
-    title: "Do you carry the storage cost alone? No.",
-    body: "Insured, climate-controlled custody is shared across every holder of a bottle's units, instead of falling on one collector to arrange and pay for.",
-  },
+  "Exit anytime — trade 24/7, no auction calendar.",
+  "Buy at any size — priced per unit, not per bottle.",
+  "Always backed — every unit tied to a bottle already in custody.",
+  "Shared cost — storage and insurance split across holders, not carried alone.",
 ];
 
 export function WhyHoldVaultUnits() {
@@ -29,23 +19,22 @@ export function WhyHoldVaultUnits() {
           <p className="mt-3 font-display text-lg italic text-amber-deep">
             The bottle drives the value. Vellichor removes the friction.
           </p>
-
-          <p className="mt-5 text-base leading-relaxed text-ink-dim">
-            Rare whiskey and fine wine have appreciated meaningfully over the past two decades,
-            driven by fixed supply and steady collector demand — that&apos;s the category,
-            independent of any platform. What Vellichor changes is what it costs to access and
-            exit that value.
-          </p>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+        <div className="mt-10 grid gap-3 sm:grid-cols-2">
           {FEATURES.map((feature) => (
-            <div key={feature.title} className="rounded-2xl bg-panel-2 p-6">
-              <p className="text-base font-semibold text-ink">{feature.title}</p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-dim">{feature.body}</p>
-            </div>
+            <p key={feature} className="rounded-2xl bg-panel-2 p-5 text-sm leading-relaxed text-ink">
+              {feature}
+            </p>
           ))}
         </div>
+
+        <Link
+          href="/docs/why-hold-vault-units"
+          className="mt-6 inline-block text-sm font-semibold text-amber-deep hover:underline"
+        >
+          Read more →
+        </Link>
 
         <div className="mt-10 border-t border-line pt-6">
           <p className="max-w-2xl text-xs leading-relaxed text-ink-dim">

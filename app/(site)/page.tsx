@@ -3,30 +3,26 @@ import { VaultHeroGauge, GenesisCollectionPreview } from "@/components/HomeVault
 import { WhyHoldVaultUnits } from "@/components/WhyHoldVaultUnits";
 
 const WHY_ROWS = [
-  {
-    n: "01",
-    problem: "Illiquid for months",
-    fix: "Vault Units trade 24/7 on Robinhood Chain. No waiting on an auction house.",
-  },
+  { n: "01", problem: "Illiquid for months", fix: "trades 24/7 on Robinhood Chain" },
   {
     n: "02",
-    problem: "Storage most collectors can't arrange",
-    fix: "Every bottle is already in insured, climate-controlled custody before it's listed — the cost is shared, not yours alone.",
+    problem: "Storage nobody can arrange",
+    fix: "insured, climate-controlled custody, shared cost",
   },
   {
     n: "03",
     problem: "Counterfeits everywhere",
-    fix: "Every bottle is authenticated before vaulting, with provenance recorded permanently on-chain.",
+    fix: "authenticated before vaulting, provenance on-chain",
   },
   {
     n: "04",
     problem: "Bottles degrade if mishandled",
-    fix: "Professional vault operators store and monitor every bottle under correct conditions — not left to chance in transit or storage.",
+    fix: "professionally stored and monitored",
   },
   {
     n: "05",
-    problem: '"Limited edition" doesn\'t always mean valuable',
-    fix: "Vellichor's curation standard filters for real collector demand, not packaging hype.",
+    problem: 'Fake "limited edition" scarcity',
+    fix: "curation filters for real collector demand",
   },
 ];
 
@@ -34,37 +30,27 @@ const STEPS = [
   {
     n: "1",
     title: "Curate",
-    body: "Vellichor sources authenticated, professionally graded rare whiskey and fine wine from auctions, distilleries, and private collections.",
-    linkLabel: "How Vault Units work",
-    href: "/docs/vault-units",
+    body: "Sourced and authenticated from auctions, distilleries, and private collections.",
   },
   {
     n: "2",
     title: "Vault",
-    body: "Each bottle is placed in insured, climate-controlled storage with full provenance documentation before it is ever listed.",
-    linkLabel: "Explore the Vault",
-    href: "/vault",
+    body: "Insured, climate-controlled storage — before a single unit is listed.",
   },
   {
     n: "3",
     title: "Tokenize",
-    body: "The bottle is split into a fixed number of Vault Units, minted on Robinhood Chain.",
-    linkLabel: "Read the Vault docs",
-    href: "/docs/vault",
+    body: "Split into a fixed number of Vault Units, minted on Robinhood Chain.",
   },
   {
     n: "4",
     title: "Trade",
-    body: "Units are tradable 24/7, at any size, on the Market.",
-    linkLabel: "View the Market",
-    href: "/market",
+    body: "Tradable 24/7, any size, on the Market.",
   },
   {
     n: "5",
     title: "Redeem",
-    body: "Consolidate 100% of a bottle's units — bought directly at listing, acquired from other holders on the Market, or both — to claim the physical bottle.",
-    linkLabel: "Redemption docs",
-    href: "/docs/redemption",
+    body: "Consolidate 100% of a bottle's units to claim it physically.",
   },
 ];
 
@@ -144,21 +130,22 @@ export default function Home() {
 
           <ol className="mt-10 divide-y divide-line border-y border-line">
             {WHY_ROWS.map((row) => (
-              <li
-                key={row.n}
-                className="grid grid-cols-1 gap-2 py-6 sm:grid-cols-[2.5rem_minmax(0,38%)_1fr] sm:items-baseline sm:gap-8"
-              >
+              <li key={row.n} className="flex items-baseline gap-4 py-4">
                 <span className="font-data text-sm tabular-nums text-gold">{row.n}</span>
-                <p className="text-base font-medium leading-snug text-ink">{row.problem}</p>
-                <p className="text-sm leading-relaxed text-ink-dim">{row.fix}</p>
+                <p className="text-sm leading-snug text-ink">
+                  <span className="font-medium">{row.problem}</span>
+                  <span className="text-ink-dim"> → {row.fix}</span>
+                </p>
               </li>
             ))}
           </ol>
 
-          <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-dim">
-            You&apos;re not just buying a fraction of a bottle. You&apos;re buying past the five
-            problems that made rare spirits investing hard in the first place.
-          </p>
+          <Link
+            href="/docs/why-vellichor"
+            className="mt-6 inline-block text-sm font-semibold text-amber-deep hover:underline"
+          >
+            Read more →
+          </Link>
         </div>
       </section>
 
@@ -177,15 +164,16 @@ export default function Home() {
                 </span>
                 <h3 className="mt-4 font-display text-lg font-normal text-ink">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-dim">{step.body}</p>
-                <Link
-                  href={step.href}
-                  className="mt-4 text-sm font-semibold text-ink hover:underline"
-                >
-                  {step.linkLabel} →
-                </Link>
               </li>
             ))}
           </ol>
+
+          <Link
+            href="/docs"
+            className="mt-8 inline-block text-sm font-semibold text-amber-deep hover:underline"
+          >
+            Read the full docs →
+          </Link>
         </div>
       </section>
 

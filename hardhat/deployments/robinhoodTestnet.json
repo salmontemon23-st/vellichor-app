@@ -1,0 +1,10 @@
+{
+  "network": "robinhoodTestnet",
+  "chainId": 46630,
+  "deployer": "0x6ebbB286cfbfedeA0DB908B22f6c4c13971c95dC",
+  "treasury": "0xBaA9f2Fa4b2CbDCDbf1F05B98e6681394d627b38",
+  "paymentToken": "0xC9f9c86933092BbbfFF3CCb4b105A4A94bf3Bd4E",
+  "vellichorVault": "0x4a343FA904e6dA050AA24b14F8A2D1Ad726Cf9ee",
+  "vellichorMarket": "0x2Dbcc52c135605d6Dd9981a068719e2b08137ab6",
+  "deployedAt": "2026-07-18T14:01:02.724Z"
+}

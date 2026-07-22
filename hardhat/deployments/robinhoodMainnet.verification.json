@@ -1,0 +1,9 @@
+{
+  "network": "robinhoodMainnet",
+  "chainId": 4663,
+  "deployer": "0x2317d8B3a1Dd17C524b160b664A3F56637Bb26f4",
+  "admin": "0x3F8b972874683710120ad5122116b2574814bD06",
+  "vellichorAuthenticityRegistry": "0x9e2bCBBbe77c25222dFda49D514B511E190c9cd3",
+  "vellichorEnvironmentalOracle": "0x832c71a94202FD9Dee51ff512861Be92672DcD6c",
+  "deployedAt": "2026-07-22T22:16:16.988Z"
+}

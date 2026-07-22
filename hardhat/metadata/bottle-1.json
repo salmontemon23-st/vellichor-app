@@ -1,0 +1,44 @@
+{
+  "name": "Milwaukee's Club 30th Anniversary — American Style Whiskey",
+  "description": "American style whiskey distilled in 2006 (KY), finished in a Chichibu refill puncheon from 2012–2020. Bottled for Milwaukee's Club Whiskey Bar's 30th Anniversary. Bottle #1568. 700ml, 54.5% ABV. Held in Vellichor's insured, climate-controlled vault; this token represents a fractional Vault Unit claim on this specific physical bottle.",
+  "image": "ipfs://QmfWdmWBncDJ8w1oWiR8ykMfe5rV8pugEB6vENp6C757gp",
+  "external_url": "https://vellichor.xyz/vault/1",
+  "attributes": [
+    {
+      "trait_type": "Category",
+      "value": "American Style Whiskey"
+    },
+    {
+      "trait_type": "Bottler",
+      "value": "Milwaukee's Club Whiskey Bar"
+    },
+    {
+      "trait_type": "Edition",
+      "value": "30th Anniversary"
+    },
+    {
+      "trait_type": "Bottle Number",
+      "value": "1568"
+    },
+    {
+      "trait_type": "Distilled",
+      "value": "2006, KY"
+    },
+    {
+      "trait_type": "Finish",
+      "value": "Chichibu Refill Puncheon, 2012–2020"
+    },
+    {
+      "trait_type": "Volume",
+      "value": "700ml"
+    },
+    {
+      "trait_type": "ABV",
+      "value": "54.5%"
+    },
+    {
+      "trait_type": "Custody",
+      "value": "Vellichor Vault — insured, climate-controlled"
+    }
+  ]
+}

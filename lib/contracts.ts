@@ -3,6 +3,8 @@ import vellichorVaultAbi from "./abi/VellichorVault.json";
 import vellichorMarketAbi from "./abi/VellichorMarket.json";
 import vellichorGovernanceAbi from "./abi/VellichorGovernance.json";
 import mockVellAbi from "./abi/MockVELL.json";
+import vellichorAuthenticityRegistryAbi from "./abi/VellichorAuthenticityRegistry.json";
+import vellichorEnvironmentalOracleAbi from "./abi/VellichorEnvironmentalOracle.json";
 
 /**
  * Real Robinhood Chain mainnet contract addresses, deployed via
@@ -32,6 +34,22 @@ export const VELLICHOR_VAULT_ABI = vellichorVaultAbi as Abi;
 export const VELLICHOR_MARKET_ABI = vellichorMarketAbi as Abi;
 export const VELLICHOR_GOVERNANCE_ABI = vellichorGovernanceAbi as Abi;
 export const MOCK_VELL_ABI = mockVellAbi as Abi;
+export const VELLICHOR_AUTHENTICITY_REGISTRY_ABI = vellichorAuthenticityRegistryAbi as Abi;
+export const VELLICHOR_ENVIRONMENTAL_ORACLE_ABI = vellichorEnvironmentalOracleAbi as Abi;
+
+/**
+ * VellichorAuthenticityRegistry + VellichorEnvironmentalOracle — written and tested
+ * locally (see vellichor-hardhat/contracts/VERIFICATION_STATUS.md) but NOT yet
+ * deployed to any real network. These addresses are unset until that deployment
+ * happens; the internal admin intake tool renders a "not configured" state until then.
+ */
+export const VELLICHOR_AUTHENTICITY_REGISTRY_ADDRESS = process.env
+  .NEXT_PUBLIC_AUTHENTICITY_REGISTRY_ADDRESS as `0x${string}` | undefined;
+
+export const VELLICHOR_ENVIRONMENTAL_ORACLE_ADDRESS = process.env
+  .NEXT_PUBLIC_ENVIRONMENTAL_ORACLE_ADDRESS as `0x${string}` | undefined;
+
+export const verificationConfigured = !!VELLICHOR_AUTHENTICITY_REGISTRY_ADDRESS;
 
 /**
  * VellichorGovernance + MockVELL — deployed independently of Vault/Market

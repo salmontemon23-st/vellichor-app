@@ -9,8 +9,17 @@ import {
 
 /** Read-only display of a bottle's on-chain authentication attestation, if one
  * exists. Renders nothing for bottles minted before this existed, or if the
- * registry isn't configured — this is purely informational, no admin controls. */
-export function AuthenticationBadge({ bottleId }: { bottleId: bigint }) {
+ * registry isn't configured — this is purely informational, no admin controls.
+ * Pass `showEmptyState` when this is the primary content of a section (e.g. an
+ * "Audit" tab) rather than an inline aside, so an unattested bottle doesn't
+ * just render a blank area. */
+export function AuthenticationBadge({
+  bottleId,
+  showEmptyState = false,
+}: {
+  bottleId: bigint;
+  showEmptyState?: boolean;
+}) {
   const { data: isAttested } = useReadContract({
     address: VELLICHOR_AUTHENTICITY_REGISTRY_ADDRESS,
     abi: VELLICHOR_AUTHENTICITY_REGISTRY_ABI,
@@ -27,7 +36,14 @@ export function AuthenticationBadge({ bottleId }: { bottleId: bigint }) {
     query: { enabled: verificationConfigured && !!isAttested },
   });
 
-  if (!verificationConfigured || !isAttested || !attestation) return null;
+  if (!verificationConfigured || !isAttested || !attestation) {
+    if (!showEmptyState) return null;
+    return (
+      <p className="rounded-xl border border-dashed border-line p-8 text-center text-sm text-ink-dim">
+        No authentication attestation recorded yet for this bottle.
+      </p>
+    );
+  }
 
   const [notes, , timestamp] = attestation as [string, `0x${string}`, bigint];
   const date = new Date(Number(timestamp) * 1000).toLocaleDateString(undefined, {

@@ -21,15 +21,48 @@ import { useWalletModal } from "@/lib/wallet-modal";
 import { AcquirePanel } from "@/components/AcquirePanel";
 import { BuyListingPanel } from "@/components/BuyListingPanel";
 import { AuthenticationBadge } from "@/components/AuthenticationBadge";
+import { EnvironmentalReading } from "@/components/EnvironmentalReading";
 import { useBottleActivity } from "@/lib/hooks/useBottleActivity";
 import { useBottleMarketStats } from "@/lib/hooks/useBottleMarketStats";
 import { PriceHistoryChart, type PricePoint } from "@/components/market/PriceHistoryChart";
 
 type SelectedListing = { kind: "primary" } | { kind: "secondary"; listing: OnChainListing };
-type Tab = "activity" | "price" | "details";
+type Tab = "description" | "audit" | "temperature" | "activity" | "price";
+
+const TAB_LABEL: Record<Tab, string> = {
+  description: "Description",
+  audit: "Audit",
+  temperature: "Temperature",
+  activity: "Activity",
+  price: "Price History",
+};
 
 function fmt(v: bigint) {
   return formatUnits(v, PAYMENT_TOKEN_DECIMALS);
+}
+
+function CategoryIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z" />
+    </svg>
+  );
+}
+
+function SizeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.5 2h5v3.2l2 3.2c.5.8.8 1.7.8 2.7V19a2 2 0 0 1-2 2h-6.6a2 2 0 0 1-2-2V11.1c0-1 .3-1.9.8-2.7l2-3.2V2Z" />
+    </svg>
+  );
+}
+
+function AbvIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2.5s6 6.6 6 11a6 6 0 1 1-12 0c0-4.4 6-11 6-11Z" />
+    </svg>
+  );
 }
 
 function AddressLink({ address }: { address: `0x${string}` }) {
@@ -55,7 +88,7 @@ export default function MarketItemDetailClient() {
   const { open } = useWalletModal();
   const wrongNetwork = isConnected && chainId !== robinhoodChain.id;
 
-  const [tab, setTab] = useState<Tab>("activity");
+  const [tab, setTab] = useState<Tab>("description");
   const [showBuy, setShowBuy] = useState(false);
   const [mainImage, setMainImage] = useState<string | undefined>(undefined);
 
@@ -169,6 +202,8 @@ export default function MarketItemDetailClient() {
   }
 
   const category = meta?.attributes?.find((a) => a.trait_type === "Category")?.value;
+  const size = meta?.attributes?.find((a) => a.trait_type === "Size" || a.trait_type === "Volume")?.value;
+  const abv = meta?.attributes?.find((a) => a.trait_type === "ABV")?.value;
   const images = [meta?.image, ...(meta?.images ?? [])].filter((i): i is string => !!i);
   const activeImage = mainImage ?? images[0];
 
@@ -181,16 +216,16 @@ export default function MarketItemDetailClient() {
         ← Back to Market
       </Link>
 
-      <div className="mt-6 grid gap-12 lg:grid-cols-[440px_1fr]">
+      <div className="mt-6 grid gap-12 lg:grid-cols-[560px_1fr]">
         {/* Image area */}
         <div>
-          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-panel p-6">
+          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-panel p-8">
             {activeImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={ipfsToHttp(activeImage)}
                 alt={bottle.name}
-                className="mx-auto w-full max-w-[420px] rounded-xl object-contain"
+                className="mx-auto w-full max-w-[520px] rounded-xl object-contain"
               />
             ) : (
               <div className="flex h-64 w-full items-center justify-center text-sm text-ink-dim">No image yet</div>
@@ -217,12 +252,32 @@ export default function MarketItemDetailClient() {
         <div>
           {/* Header */}
           <div className="flex flex-wrap items-center gap-2">
-            {category && <span className="eyebrow">{category}</span>}
             <span className="rounded-full bg-panel-2 px-3 py-1 text-xs font-medium text-ink-dim">
               {STATUS_LABEL[bottleStatus(bottle)]}
             </span>
           </div>
           <h1 className="mt-2 font-display text-3xl font-normal text-ink">{bottle.name}</h1>
+
+          <div className="mt-3 flex flex-wrap items-center gap-5 text-sm text-ink-dim">
+            {category && (
+              <span className="flex items-center gap-1.5">
+                <CategoryIcon />
+                {category}
+              </span>
+            )}
+            {size && (
+              <span className="flex items-center gap-1.5">
+                <SizeIcon />
+                {size}
+              </span>
+            )}
+            {abv && (
+              <span className="flex items-center gap-1.5">
+                <AbvIcon />
+                {abv}
+              </span>
+            )}
+          </div>
 
           {/* Price panel */}
           <div className="mt-6 rounded-2xl border border-line bg-panel p-5">
@@ -285,21 +340,53 @@ export default function MarketItemDetailClient() {
           </div>
 
           {/* Tabs */}
-          <div className="mt-8 flex gap-1 border-b border-line">
-            {(["activity", "price", "details"] as Tab[]).map((t) => (
+          <div className="mt-8 flex flex-wrap gap-1 border-b border-line">
+            {(["description", "audit", "temperature", "activity", "price"] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`px-4 py-2.5 text-sm font-medium capitalize transition-colors ${
+                className={`px-4 py-2.5 text-sm font-medium transition-colors ${
                   tab === t ? "border-b-2 border-amber text-ink" : "text-ink-dim hover:text-ink"
                 }`}
               >
-                {t === "price" ? "Price History" : t}
+                {TAB_LABEL[t]}
               </button>
             ))}
           </div>
 
           <div className="mt-5">
+            {tab === "description" && (
+              <div>
+                {meta?.description && (
+                  <p className="text-sm leading-relaxed text-ink-dim">{meta.description}</p>
+                )}
+                {meta?.attributes && meta.attributes.length > 0 && (
+                  <div className="mt-5 overflow-hidden rounded-xl border border-line">
+                    <table className="w-full text-left text-sm">
+                      <tbody className="divide-y divide-line">
+                        {meta.attributes.map((attr) => (
+                          <tr key={attr.trait_type}>
+                            <td className="w-1/3 px-4 py-3 italic text-ink-dim">{attr.trait_type}</td>
+                            <td className="px-4 py-3 text-ink">{attr.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                <div className="mt-5 rounded-xl border border-line bg-panel p-4">
+                  <p className="eyebrow">Units</p>
+                  <p className="mt-2 font-data text-sm text-ink">
+                    {bottle.unitsSold.toString()} / {bottle.totalUnits.toString()} claimed ({pct}%)
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {tab === "audit" && <AuthenticationBadge bottleId={bottle.bottleId} showEmptyState />}
+
+            {tab === "temperature" && <EnvironmentalReading bottleId={bottle.bottleId} />}
+
             {tab === "activity" &&
               (activityLoading ? (
                 <p className="text-sm text-ink-dim">Loading activity…</p>
@@ -372,31 +459,6 @@ export default function MarketItemDetailClient() {
               ))}
 
             {tab === "price" && <PriceHistoryChart points={pricePoints} />}
-
-            {tab === "details" && (
-              <div>
-                <AuthenticationBadge bottleId={bottle.bottleId} />
-                {meta?.description && (
-                  <p className="mt-5 text-sm leading-relaxed text-ink-dim">{meta.description}</p>
-                )}
-                {meta?.attributes && meta.attributes.length > 0 && (
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    {meta.attributes.map((attr) => (
-                      <div key={attr.trait_type} className="rounded-xl border border-line bg-panel p-4">
-                        <p className="eyebrow">{attr.trait_type}</p>
-                        <p className="mt-2 text-sm text-ink">{attr.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="mt-5 rounded-xl border border-line bg-panel p-4">
-                  <p className="eyebrow">Units</p>
-                  <p className="mt-2 font-data text-sm text-ink">
-                    {bottle.unitsSold.toString()} / {bottle.totalUnits.toString()} claimed ({pct}%)
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

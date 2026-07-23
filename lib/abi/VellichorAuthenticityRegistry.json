@@ -41,18 +41,6 @@
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "certificateURI",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "physicalTagHash",
-        "type": "bytes32"
-      },
-      {
         "indexed": true,
         "internalType": "address",
         "name": "attestedBy",
@@ -181,16 +169,6 @@
     "outputs": [
       {
         "internalType": "string",
-        "name": "certificateURI",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "physicalTagHash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
         "name": "notes",
         "type": "string"
       },
@@ -294,16 +272,6 @@
         "internalType": "uint256",
         "name": "bottleId",
         "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "certificateURI",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "physicalTagHash",
-        "type": "bytes32"
       },
       {
         "internalType": "string",

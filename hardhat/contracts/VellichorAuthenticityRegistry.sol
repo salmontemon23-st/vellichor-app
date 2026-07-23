@@ -22,8 +22,6 @@ contract VellichorAuthenticityRegistry is AccessControl {
     bytes32 public constant AUDITOR_ROLE = keccak256("AUDITOR_ROLE");
 
     struct Attestation {
-        string certificateURI;
-        bytes32 physicalTagHash;
         string notes;
         address attestedBy;
         uint256 timestamp;
@@ -35,37 +33,17 @@ contract VellichorAuthenticityRegistry is AccessControl {
     ///         the admin tool gates Step 3 (mint) on.
     mapping(uint256 => bool) public isAttested;
 
-    event AttestationRecorded(
-        uint256 indexed bottleId,
-        string certificateURI,
-        bytes32 physicalTagHash,
-        address indexed attestedBy,
-        uint256 timestamp
-    );
+    event AttestationRecorded(uint256 indexed bottleId, address indexed attestedBy, uint256 timestamp);
 
     constructor(address admin) {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
         _grantRole(AUDITOR_ROLE, admin);
     }
 
-    /// @notice Record an authentication attestation for a bottle. `physicalTagHash` may
-    ///         be bytes32(0) — no NFC/RFID hardware exists yet; this field is a
-    ///         placeholder for when that hardware exists, not a required input today.
-    function recordAttestation(
-        uint256 bottleId,
-        string calldata certificateURI,
-        bytes32 physicalTagHash,
-        string calldata notes
-    ) external onlyRole(AUDITOR_ROLE) {
-        require(bytes(certificateURI).length > 0, "certificate URI required");
-        attestations[bottleId] = Attestation({
-            certificateURI: certificateURI,
-            physicalTagHash: physicalTagHash,
-            notes: notes,
-            attestedBy: msg.sender,
-            timestamp: block.timestamp
-        });
+    /// @notice Record an authentication attestation for a bottle.
+    function recordAttestation(uint256 bottleId, string calldata notes) external onlyRole(AUDITOR_ROLE) {
+        attestations[bottleId] = Attestation({ notes: notes, attestedBy: msg.sender, timestamp: block.timestamp });
         isAttested[bottleId] = true;
-        emit AttestationRecorded(bottleId, certificateURI, physicalTagHash, msg.sender, block.timestamp);
+        emit AttestationRecorded(bottleId, msg.sender, block.timestamp);
     }
 }

@@ -2,7 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { parseUnits, zeroHash, type Hex } from "viem";
+import { parseUnits } from "viem";
 import {
   VELLICHOR_VAULT_ABI,
   VELLICHOR_VAULT_ADDRESS,
@@ -84,8 +84,6 @@ export function BottleIntakeWizard() {
   }
 
   // Step 2 — authentication.
-  const [certificateURI, setCertificateURI] = useState("");
-  const [physicalTagHashInput, setPhysicalTagHashInput] = useState("");
   const [notes, setNotes] = useState("");
 
   const {
@@ -109,14 +107,11 @@ export function BottleIntakeWizard() {
   function submitAttestation(e: FormEvent) {
     e.preventDefault();
     if (draftBottleId === null) return;
-    const tagHash: Hex = physicalTagHashInput.trim()
-      ? (physicalTagHashInput.trim() as Hex)
-      : zeroHash;
     writeAttestation({
       address: VELLICHOR_AUTHENTICITY_REGISTRY_ADDRESS!,
       abi: VELLICHOR_AUTHENTICITY_REGISTRY_ABI,
       functionName: "recordAttestation",
-      args: [draftBottleId, certificateURI, tagHash, notes],
+      args: [draftBottleId, notes],
     });
   }
 
@@ -368,19 +363,6 @@ export function BottleIntakeWizard() {
             </p>
           ) : (
             <form onSubmit={submitAttestation} className="mt-4 flex flex-col gap-3">
-              <input
-                required
-                placeholder="Certificate URI (ipfs://…)"
-                value={certificateURI}
-                onChange={(e) => setCertificateURI(e.target.value)}
-                className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
-              />
-              <input
-                placeholder="Physical tag hash (optional — no hardware yet)"
-                value={physicalTagHashInput}
-                onChange={(e) => setPhysicalTagHashInput(e.target.value)}
-                className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink font-data"
-              />
               <textarea
                 placeholder="Notes"
                 value={notes}

@@ -47,18 +47,13 @@ async function main() {
   // Non-auditor wallet should NOT be able to record an attestation.
   let rejected = false;
   try {
-    await registry.connect(otherWallet).recordAttestation(draftBottleId, "ipfs://cert", hre.ethers.ZeroHash, "unauthorized attempt");
+    await registry.connect(otherWallet).recordAttestation(draftBottleId, "unauthorized attempt");
   } catch {
     rejected = true;
   }
   console.log(`Non-auditor wallet blocked from recordAttestation: ${rejected} (should be true)`);
 
-  await registry.recordAttestation(
-    draftBottleId,
-    "ipfs://cert-placeholder-for-demo",
-    hre.ethers.ZeroHash, // no NFC/RFID hardware exists yet — blank, per VERIFICATION_STATUS.md
-    "Verified bottle condition and provenance documents in person."
-  );
+  await registry.recordAttestation(draftBottleId, "Verified bottle condition and provenance documents in person.");
   console.log(`isAttested(${draftBottleId}) after: ${await registry.isAttested(draftBottleId)} (should be true — "List Bottle" now enabled)`);
 
   // === Step 2b (optional): baseline environmental reading ===

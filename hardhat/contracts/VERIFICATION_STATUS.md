@@ -9,13 +9,19 @@ assuming it's battle-tested.
 
 | Contract | Status |
 |---|---|
-| `VellichorAuthenticityRegistry.sol` | Deployed on Robinhood Chain mainnet (chainId 4663) at `0x9e2bCBBbe77c25222dFda49D514B511E190c9cd3`. AUDITOR_ROLE and Ownable owner both set to the team treasury address. Tested locally first (`scripts/simulate-verification.js`) before deployment. Records a human attestation (`recordAttestation()`) per staged bottleId; `isAttested(bottleId)` is the check the admin tool gates minting on. |
+| `VellichorAuthenticityRegistry.sol` | Deployed on Robinhood Chain mainnet (chainId 4663) at `0x4937021499Ed825926f65d3b6C580d6b1e720828` (redeployed — see below; the original `0x9e2bCBBbe77c25222dFda49D514B511E190c9cd3` is orphaned, no real attestation was ever recorded on it). AUDITOR_ROLE and Ownable owner both set to the team treasury address. `recordAttestation(bottleId, notes)` — `isAttested(bottleId)` is the check the admin tool gates minting on. |
 | `VellichorEnvironmentalOracle.sol` | Deployed on Robinhood Chain mainnet at `0x832c71a94202FD9Dee51ff512861Be92672DcD6c`. Records a history of manually-entered temperature/humidity readings per bottleId (`recordReading()`), owner-only. |
 
 Deployed via `scripts/deploy-verification-mainnet.js`; addresses saved to
 `deployments/robinhoodMainnet.verification.json`. `vellichor-app/.env.local` is wired
 to these addresses (`NEXT_PUBLIC_AUTHENTICITY_REGISTRY_ADDRESS`,
 `NEXT_PUBLIC_ENVIRONMENTAL_ORACLE_ADDRESS`).
+
+**Redeploy note**: the registry originally required `certificateURI` (non-empty) and
+accepted an optional `physicalTagHash`. Both were dropped per request —
+`recordAttestation()` is now just `(bottleId, notes)`. Redeployed via
+`scripts/redeploy-registry-mainnet.js` rather than upgraded in place (no proxy pattern),
+since nothing had been recorded on the original deployment yet.
 
 ## Admin UI — exists, not yet end-to-end tested with a real wallet
 `vellichor-app/app/admin/list-bottle` is a 3-step intake wizard (Details →
@@ -25,15 +31,13 @@ render and gate correctly (unconnected wallet sees "Connect a wallet to continue
 console errors), but the actual attestation → mint transaction flow has not yet been
 exercised against mainnet with a real, authorized wallet.
 
-**The old `ListBottleForm.tsx` mint form on the public `/vault` page is still live and
-still bypasses this entirely** — it calls `VellichorVault.listBottle()` directly with
-no authentication step. That was left in place while the registry didn't exist yet, to
-avoid breaking the only way to mint bottles. Now that the registry is deployed, this is
-worth revisiting: keep both, or retire the old form so the gate can't be bypassed.
+The old `ListBottleForm.tsx` mint form (previously on the public `/vault` page, called
+`VellichorVault.listBottle()` directly with no authentication step) has been removed.
+`/admin/list-bottle` is now the only way to mint a bottle through the app.
 
 ## What's still deliberate / not done
 - **Not connected on-chain to `VellichorVault.sol`.** There is no smart contract rule that blocks `listBottle()` from being called without a prior attestation existing — this is enforced by the admin UI, not the contracts. Adding a contract-level dependency would require modifying and redeploying `VellichorVault.sol`, which is already live on mainnet with real listing history — redeploying would orphan that state.
-- **No physical tag hardware.** `physicalTagHash` in `VellichorAuthenticityRegistry` accepts `bytes32(0)` today — no NFC/RFID hardware exists to produce a real value. The field is a placeholder for when that hardware exists.
+- **No certificate URI or physical tag hash fields anymore.** Both were dropped from `recordAttestation()` — attestation is now just a notes field plus who-attested/when, recorded on-chain. If certificate documentation or NFC/RFID tagging is wanted later, that's a fresh contract change, not a re-add of the old fields.
 - **Not audited.** Per this project's own standing rule, these need a security review before real bottle authentication depends on them being unbreakable — they're live, but that's not the same bar as audited.
 
 ## The staged-ID coordination

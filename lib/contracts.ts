@@ -119,9 +119,11 @@ export const contractsConfigured =
 // Bottle IDs to hide from the UI (e.g. a bottle listed with a broken
 // metadataURI that can never be fixed on-chain, since the Vault contract has
 // no update function) — still exist on-chain and remain redeemable/tradable
-// by whoever holds their units. Empty on this fresh mainnet deployment; the
-// testnet-specific set (bottles #1/#2) didn't carry over.
-export const HIDDEN_BOTTLE_IDS = new Set<bigint>([]);
+// by whoever holds their units. Bottles #1-4 were all test/trial mints
+// (including working through the admin authentication flow) — hidden from
+// display, not deleted (the Vault contract has no delete function, and
+// bottle #1 has one real unit sold, which remains valid).
+export const HIDDEN_BOTTLE_IDS = new Set<bigint>([1n, 2n, 3n, 4n]);
 
 // On-chain Bottle struct as returned by VellichorVault.bottles(id) /
 // getAllBottles(). Distinct from the legacy fixture `Bottle` type in

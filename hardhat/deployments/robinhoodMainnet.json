@@ -6,5 +6,8 @@
   "paymentToken": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
   "vellichorVault": "0x78a3C6BDfc720E7095b3DD561bADA37D97c09645",
   "vellichorMarket": "0x98EA3EFCba914496310DcC56F351dDe04995C395",
-  "deployedAt": "2026-07-21T11:19:45.479Z"
+  "deployedAt": "2026-07-21T11:19:45.479Z",
+  "vellichorVaultOwnershipTransferredTo": "0x3F8b972874683710120ad5122116b2574814bD06",
+  "vellichorVaultOwnershipTransferredAt": "2026-07-23T06:56:00.000Z",
+  "vellichorVaultOwnershipTransferNote": "Originally owned by deployer; transferred to treasury so one wallet holds VellichorVault owner() + AuthenticityRegistry AUDITOR_ROLE + EnvironmentalOracle owner() for the /admin/list-bottle flow."
 }

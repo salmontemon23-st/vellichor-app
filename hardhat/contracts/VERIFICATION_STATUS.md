@@ -23,13 +23,20 @@ accepted an optional `physicalTagHash`. Both were dropped per request —
 `scripts/redeploy-registry-mainnet.js` rather than upgraded in place (no proxy pattern),
 since nothing had been recorded on the original deployment yet.
 
-## Admin UI — exists, not yet end-to-end tested with a real wallet
+## Admin UI — the one wallet that can complete the full flow
 `vellichor-app/app/admin/list-bottle` is a 3-step intake wizard (Details →
 Authentication → Mint), gated by an on-chain check (`AUDITOR_ROLE` on the registry, or
-`owner()` on `VellichorVault`) — not just an unlinked route. It has been verified to
-render and gate correctly (unconnected wallet sees "Connect a wallet to continue", no
-console errors), but the actual attestation → mint transaction flow has not yet been
-exercised against mainnet with a real, authorized wallet.
+`owner()` on `VellichorVault`).
+
+**Use the treasury wallet (`0x3F8b972874683710120ad5122116b2574814bD06`) to connect.**
+`VellichorVault` was originally deployed with the deployer address as owner, while
+`AuthenticityRegistry`/`EnvironmentalOracle` were deployed with treasury as
+admin/owner — two different addresses, so no single wallet could complete Step 2 and
+Step 3 in the same session (Step 2 transactions reverted for the deployer wallet, which
+is what surfaced this). Fixed by transferring `VellichorVault` ownership from deployer
+to treasury via `scripts/transfer-vault-ownership.js` — see
+`deployments/robinhoodMainnet.json` for the transfer record. Treasury now holds all
+three: Vault `owner()`, Registry `AUDITOR_ROLE`, and EnvironmentalOracle `owner()`.
 
 The old `ListBottleForm.tsx` mint form (previously on the public `/vault` page, called
 `VellichorVault.listBottle()` directly with no authentication step) has been removed.

@@ -22,6 +22,7 @@ import { AcquirePanel } from "@/components/AcquirePanel";
 import { BuyListingPanel } from "@/components/BuyListingPanel";
 import { AuthenticationBadge } from "@/components/AuthenticationBadge";
 import { EnvironmentalReading } from "@/components/EnvironmentalReading";
+import { CooldownReveal } from "@/components/CooldownReveal";
 import { useBottleActivity } from "@/lib/hooks/useBottleActivity";
 import { useBottleMarketStats } from "@/lib/hooks/useBottleMarketStats";
 import { PriceHistoryChart, type PricePoint } from "@/components/market/PriceHistoryChart";
@@ -237,12 +238,14 @@ export default function MarketItemDetailClient() {
         <div>
           <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-panel p-8">
             {activeImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={ipfsToHttp(activeImage)}
-                alt={bottle.name}
-                className="mx-auto w-full max-w-[520px] rounded-xl object-contain"
-              />
+              <CooldownReveal revealAt={meta?.revealAt} className="mx-auto w-full max-w-[520px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ipfsToHttp(activeImage)}
+                  alt={bottle.name}
+                  className="mx-auto w-full max-w-[520px] rounded-xl object-contain"
+                />
+              </CooldownReveal>
             ) : (
               <div className="flex h-64 w-full items-center justify-center text-sm text-ink-dim">No image yet</div>
             )}
@@ -258,7 +261,13 @@ export default function MarketItemDetailClient() {
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={ipfsToHttp(img)} alt="" className="h-full w-full object-cover" />
+                  <img
+                    src={ipfsToHttp(img)}
+                    alt=""
+                    className={`h-full w-full object-cover ${
+                      meta?.revealAt && meta.revealAt > Math.floor(Date.now() / 1000) ? "blur-md" : ""
+                    }`}
+                  />
                 </button>
               ))}
             </div>

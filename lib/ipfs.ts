@@ -20,6 +20,10 @@ export interface BottleMetadata {
   // actually has these, rather than faking multiple photos from one image.
   images?: string[];
   attributes?: { trait_type: string; value: string }[];
+  // Optional cooldown — unix seconds timestamp. Until this passes, the app
+  // blurs this bottle's image everywhere it's shown (set at mint time,
+  // entirely optional — most bottles won't have this field at all).
+  revealAt?: number;
 }
 
 const metadataCache = new Map<string, Promise<BottleMetadata | null>>();

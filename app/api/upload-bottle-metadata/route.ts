@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
   const name = form.get("name");
   const description = form.get("description");
   const attributesJson = form.get("attributes");
+  const revealAtRaw = form.get("revealAt");
 
   if (!(image instanceof Blob) || image.size === 0) {
     return NextResponse.json({ error: "A bottle photo is required." }, { status: 400 });
@@ -56,6 +57,15 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  let revealAt: number | undefined;
+  if (typeof revealAtRaw === "string" && revealAtRaw.trim()) {
+    const parsed = Number(revealAtRaw);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      return NextResponse.json({ error: "revealAt must be a positive unix timestamp." }, { status: 400 });
+    }
+    revealAt = parsed;
+  }
+
   try {
     const IMAGE_EXT_BY_TYPE: Record<string, string> = {
       "image/png": "png",
@@ -71,6 +81,7 @@ export async function POST(req: NextRequest) {
       description: typeof description === "string" ? description.trim() : "",
       image: `ipfs://${imageCid}`,
       attributes,
+      ...(revealAt ? { revealAt } : {}),
     };
 
     const metadataBlob = new Blob([JSON.stringify(metadata, null, 2)], { type: "application/json" });

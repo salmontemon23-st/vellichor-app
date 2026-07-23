@@ -8,6 +8,7 @@ import { formatUnits } from "viem";
 import { BottleGauge } from "@/components/BottleGauge";
 import { AcquirePanel } from "@/components/AcquirePanel";
 import { AuthenticationBadge } from "@/components/AuthenticationBadge";
+import { CooldownReveal } from "@/components/CooldownReveal";
 import {
   VELLICHOR_VAULT_ABI,
   VELLICHOR_VAULT_ADDRESS,
@@ -97,12 +98,14 @@ export default function BottleDetailPage() {
       <div className="mt-6 grid gap-12 lg:grid-cols-[440px_1fr]">
         <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-panel p-6">
           {meta?.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={ipfsToHttp(meta.image)}
-              alt={bottle.name}
-              className="mx-auto w-full max-w-[420px] rounded-xl object-contain"
-            />
+            <CooldownReveal revealAt={meta.revealAt} className="mx-auto w-full max-w-[420px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={ipfsToHttp(meta.image)}
+                alt={bottle.name}
+                className="mx-auto w-full max-w-[420px] rounded-xl object-contain"
+              />
+            </CooldownReveal>
           ) : (
             <BottleGauge percent={pct} height={220} />
           )}

@@ -78,6 +78,7 @@ export function BottleCardOnChain({ bottle }: { bottle: OnChainBottle }) {
         subtitle={bottleSubtitle(meta)}
         priceLabel={`${price} ${PAYMENT_TOKEN_SYMBOL} / unit`}
         percentClaimed={pct}
+        revealAt={meta?.revealAt}
         badge={
           <span className={`rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur-sm ${STATUS_CLASS[status]}`}>
             {STATUS_LABEL[status]}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BottleGauge } from "./BottleGauge";
+import { CooldownReveal } from "./CooldownReveal";
 
 export function BottlePhotoCard({
   href,
@@ -12,6 +13,7 @@ export function BottlePhotoCard({
   percentClaimed,
   badge,
   buyNow,
+  revealAt,
 }: {
   href: string;
   imageUrl?: string;
@@ -23,6 +25,8 @@ export function BottlePhotoCard({
   badge: ReactNode;
   /** Omit (or pass null) when there's nothing to buy — renders a single full-width "View Details" instead. */
   buyNow?: { onClick: () => void } | null;
+  /** Unix seconds — image stays blurred with a countdown until this passes. */
+  revealAt?: number;
 }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl bg-panel">
@@ -30,8 +34,10 @@ export function BottlePhotoCard({
         <div className="relative flex h-64 items-center justify-center bg-panel p-6 sm:h-72">
           <div className="absolute left-3 top-3 z-10">{badge}</div>
           {imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={imageUrl} alt={name} className="h-full w-full object-contain" />
+            <CooldownReveal revealAt={revealAt} className="h-full w-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={imageUrl} alt={name} className="h-full w-full object-contain" />
+            </CooldownReveal>
           ) : (
             <BottleGauge percent={fallbackPercent} height={180} />
           )}

@@ -66,6 +66,11 @@ export function BottleIntakeWizard() {
   const [age, setAge] = useState("");
   const [yearDistilled, setYearDistilled] = useState("");
   const [extraAttributes, setExtraAttributes] = useState<AttributeRow[]>([]);
+  const [cooldownEnabled, setCooldownEnabled] = useState(false);
+  const [cooldownDays, setCooldownDays] = useState("0");
+  const [cooldownHours, setCooldownHours] = useState("0");
+  const [cooldownMinutes, setCooldownMinutes] = useState("0");
+  const [cooldownSeconds, setCooldownSeconds] = useState("0");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -186,6 +191,17 @@ export function BottleIntakeWizard() {
       form.append("name", name);
       form.append("description", description);
       form.append("attributes", JSON.stringify(attributes));
+
+      if (cooldownEnabled) {
+        const totalSeconds =
+          (Number(cooldownDays) || 0) * 86400 +
+          (Number(cooldownHours) || 0) * 3600 +
+          (Number(cooldownMinutes) || 0) * 60 +
+          (Number(cooldownSeconds) || 0);
+        if (totalSeconds > 0) {
+          form.append("revealAt", String(Math.floor(Date.now() / 1000) + totalSeconds));
+        }
+      }
 
       const res = await fetch("/api/upload-bottle-metadata", { method: "POST", body: form });
       const json = await res.json();
@@ -366,6 +382,69 @@ export function BottleIntakeWizard() {
                 className="text-sm text-ink-dim file:mr-3 file:rounded-full file:border-0 file:bg-panel-2 file:px-4 file:py-2 file:text-sm file:font-medium file:text-ink hover:file:bg-line"
               />
             </div>
+          </div>
+
+          <div className="mt-4 rounded-lg border border-line bg-panel-2 p-4">
+            <label className="flex items-center gap-2 text-sm font-medium text-ink">
+              <input
+                type="checkbox"
+                checked={cooldownEnabled}
+                onChange={(e) => setCooldownEnabled(e.target.checked)}
+                className="h-4 w-4 rounded border-line"
+              />
+              Cooldown before reveal
+            </label>
+            <p className="mt-1 text-xs text-ink-dim">
+              Optional — the bottle photo stays blurred everywhere in the app until this much time
+              has passed since minting.
+            </p>
+            {cooldownEnabled && (
+              <div className="mt-3 grid grid-cols-4 gap-2">
+                <label className="flex flex-col gap-1">
+                  <span className="text-xs text-ink-dim">Days</span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={cooldownDays}
+                    onChange={(e) => setCooldownDays(e.target.value)}
+                    className="rounded-lg border border-line bg-panel px-3 py-2 text-sm text-ink font-data"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-xs text-ink-dim">Hours</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="23"
+                    value={cooldownHours}
+                    onChange={(e) => setCooldownHours(e.target.value)}
+                    className="rounded-lg border border-line bg-panel px-3 py-2 text-sm text-ink font-data"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-xs text-ink-dim">Minutes</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={cooldownMinutes}
+                    onChange={(e) => setCooldownMinutes(e.target.value)}
+                    className="rounded-lg border border-line bg-panel px-3 py-2 text-sm text-ink font-data"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-xs text-ink-dim">Seconds</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={cooldownSeconds}
+                    onChange={(e) => setCooldownSeconds(e.target.value)}
+                    className="rounded-lg border border-line bg-panel px-3 py-2 text-sm text-ink font-data"
+                  />
+                </label>
+              </div>
+            )}
           </div>
 
           <button

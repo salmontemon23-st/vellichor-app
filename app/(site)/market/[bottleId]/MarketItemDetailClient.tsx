@@ -57,6 +57,21 @@ function SizeIcon() {
   );
 }
 
+// Fixed display order for the spec table — "Spirit Type" is a display label for
+// the underlying "Category" attribute (kept as "Category" in metadata since
+// Vault/Market filtering and card labels already depend on that trait_type).
+const SPEC_ORDER: { label: string; traitType: string }[] = [
+  { label: "Producer", traitType: "Producer" },
+  { label: "Type", traitType: "Type" },
+  { label: "Spirit Type", traitType: "Category" },
+  { label: "Size", traitType: "Size" },
+  { label: "ABV", traitType: "ABV" },
+  { label: "Age", traitType: "Age" },
+  { label: "Year Distilled", traitType: "Year Distilled" },
+];
+
+const SPEC_ROWS_COLLAPSED = 4;
+
 function AbvIcon() {
   return (
     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
@@ -91,6 +106,7 @@ export default function MarketItemDetailClient() {
   const [tab, setTab] = useState<Tab>("description");
   const [showBuy, setShowBuy] = useState(false);
   const [mainImage, setMainImage] = useState<string | undefined>(undefined);
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
 
   let bottleId: bigint | null = null;
   try {
@@ -360,20 +376,46 @@ export default function MarketItemDetailClient() {
                 {meta?.description && (
                   <p className="text-sm leading-relaxed text-ink-dim">{meta.description}</p>
                 )}
-                {meta?.attributes && meta.attributes.length > 0 && (
-                  <div className="mt-5 overflow-hidden rounded-xl border border-line">
-                    <table className="w-full text-left text-sm">
-                      <tbody className="divide-y divide-line">
-                        {meta.attributes.map((attr) => (
-                          <tr key={attr.trait_type}>
-                            <td className="w-1/3 px-4 py-3 italic text-ink-dim">{attr.trait_type}</td>
-                            <td className="px-4 py-3 text-ink">{attr.value}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                {(() => {
+                  const attrs = meta?.attributes ?? [];
+                  const used = new Set<string>();
+                  const orderedRows = SPEC_ORDER.map(({ label, traitType }) => {
+                    const attr = attrs.find((a) => a.trait_type === traitType);
+                    if (!attr) return null;
+                    used.add(traitType);
+                    return { label, value: attr.value };
+                  }).filter((r): r is { label: string; value: string } => !!r);
+                  const extraRows = attrs
+                    .filter((a) => !used.has(a.trait_type))
+                    .map((a) => ({ label: a.trait_type, value: a.value }));
+                  const rows = [...orderedRows, ...extraRows];
+                  if (rows.length === 0) return null;
+                  const visibleRows = showAllSpecs ? rows : rows.slice(0, SPEC_ROWS_COLLAPSED);
+                  return (
+                    <div className="mt-5">
+                      <div className="overflow-hidden rounded-xl border border-line">
+                        <table className="w-full text-left text-sm">
+                          <tbody className="divide-y divide-line">
+                            {visibleRows.map((row) => (
+                              <tr key={row.label}>
+                                <td className="w-1/3 px-4 py-3 italic text-ink-dim">{row.label}</td>
+                                <td className="px-4 py-3 text-ink">{row.value}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      {rows.length > SPEC_ROWS_COLLAPSED && (
+                        <button
+                          onClick={() => setShowAllSpecs((v) => !v)}
+                          className="mt-3 text-sm font-medium text-amber-deep hover:underline"
+                        >
+                          {showAllSpecs ? "Show less" : `Show more (${rows.length - SPEC_ROWS_COLLAPSED})`}
+                        </button>
+                      )}
+                    </div>
+                  );
+                })()}
                 <div className="mt-5 rounded-xl border border-line bg-panel p-4">
                   <p className="eyebrow">Units</p>
                   <p className="mt-2 font-data text-sm text-ink">

@@ -61,6 +61,10 @@ export function BottleIntakeWizard() {
   const [category, setCategory] = useState("");
   const [size, setSize] = useState("");
   const [abv, setAbv] = useState("");
+  const [producer, setProducer] = useState("");
+  const [bottleType, setBottleType] = useState("");
+  const [age, setAge] = useState("");
+  const [yearDistilled, setYearDistilled] = useState("");
   const [extraAttributes, setExtraAttributes] = useState<AttributeRow[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -165,9 +169,13 @@ export function BottleIntakeWizard() {
       return;
     }
     const attributes: AttributeRow[] = [
+      producer.trim() && { trait_type: "Producer", value: producer.trim() },
+      bottleType.trim() && { trait_type: "Type", value: bottleType.trim() },
       category.trim() && { trait_type: "Category", value: category.trim() },
       size.trim() && { trait_type: "Size", value: size.trim() },
       abv.trim() && { trait_type: "ABV", value: abv.trim() },
+      age.trim() && { trait_type: "Age", value: age.trim() },
+      yearDistilled.trim() && { trait_type: "Year Distilled", value: yearDistilled.trim() },
       ...extraAttributes,
     ].filter((a): a is AttributeRow => !!a && !!a.trait_type.trim() && !!a.value.trim());
 
@@ -251,7 +259,19 @@ export function BottleIntakeWizard() {
 
           <div className="mt-3 grid gap-3 sm:grid-cols-3">
             <input
-              placeholder="Category (e.g. Bourbon)"
+              placeholder="Producer (e.g. Blade & Bow)"
+              value={producer}
+              onChange={(e) => setProducer(e.target.value)}
+              className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
+            />
+            <input
+              placeholder="Type (e.g. Bottle)"
+              value={bottleType}
+              onChange={(e) => setBottleType(e.target.value)}
+              className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
+            />
+            <input
+              placeholder="Spirit Type / Category (e.g. Bourbon)"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
@@ -266,6 +286,18 @@ export function BottleIntakeWizard() {
               placeholder="ABV (e.g. 45%)"
               value={abv}
               onChange={(e) => setAbv(e.target.value)}
+              className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
+            />
+            <input
+              placeholder="Age (e.g. 30 Year)"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
+            />
+            <input
+              placeholder="Year Distilled (e.g. 1993)"
+              value={yearDistilled}
+              onChange={(e) => setYearDistilled(e.target.value)}
               className="rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink"
             />
           </div>

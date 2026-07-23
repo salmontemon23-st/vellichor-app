@@ -7,6 +7,7 @@ import { useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { BottleGauge } from "@/components/BottleGauge";
 import { AcquirePanel } from "@/components/AcquirePanel";
+import { AuthenticationBadge } from "@/components/AuthenticationBadge";
 import {
   VELLICHOR_VAULT_ABI,
   VELLICHOR_VAULT_ADDRESS,
@@ -129,7 +130,11 @@ export default function BottleDetailPage() {
             </div>
           )}
 
-          <div className="mt-8 rounded-xl border border-line bg-panel p-5">
+          <div className="mt-8">
+            <AuthenticationBadge bottleId={bottle.bottleId} />
+          </div>
+
+          <div className="mt-4 rounded-xl border border-line bg-panel p-5">
             <p className="eyebrow">Units</p>
             <p className="mt-2 text-sm text-ink font-data">
               {bottle.unitsSold.toString()} / {bottle.totalUnits.toString()} claimed ({pct}%)

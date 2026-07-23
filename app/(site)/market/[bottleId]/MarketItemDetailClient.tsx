@@ -20,6 +20,7 @@ import { STATUS_LABEL, bottleStatus, percentClaimedOnChain, useBottleMetadata } 
 import { useWalletModal } from "@/lib/wallet-modal";
 import { AcquirePanel } from "@/components/AcquirePanel";
 import { BuyListingPanel } from "@/components/BuyListingPanel";
+import { AuthenticationBadge } from "@/components/AuthenticationBadge";
 import { useBottleActivity } from "@/lib/hooks/useBottleActivity";
 import { useBottleMarketStats } from "@/lib/hooks/useBottleMarketStats";
 import { PriceHistoryChart, type PricePoint } from "@/components/market/PriceHistoryChart";
@@ -374,8 +375,9 @@ export default function MarketItemDetailClient() {
 
             {tab === "details" && (
               <div>
+                <AuthenticationBadge bottleId={bottle.bottleId} />
                 {meta?.description && (
-                  <p className="text-sm leading-relaxed text-ink-dim">{meta.description}</p>
+                  <p className="mt-5 text-sm leading-relaxed text-ink-dim">{meta.description}</p>
                 )}
                 {meta?.attributes && meta.attributes.length > 0 && (
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">

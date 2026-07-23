@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { VaultGridOnChain } from "@/components/VaultGridOnChain";
-import { ListBottleForm } from "@/components/ListBottleForm";
 
 export const metadata: Metadata = {
   title: "Vault — Vellichor",
@@ -11,7 +10,6 @@ export default function VaultPage() {
   return (
     <div className="container min-h-[70vh] py-16">
       <div>
-        <ListBottleForm />
         <VaultGridOnChain />
       </div>
     </div>

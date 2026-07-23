@@ -32,6 +32,8 @@ export const DOCS_NAV: DocsNavGroup[] = [
     items: [
       { href: "/docs/contracts", label: "Contract addresses" },
       { href: "/docs/architecture", label: "Architecture" },
+      { href: "/docs/oracles-and-verification", label: "Oracles & Verification" },
+      { href: "/docs/agent-architecture", label: "AI Agent Architecture" },
       { href: "/docs/security", label: "Security & audits" },
       { href: "/docs/faq", label: "FAQ" },
       { href: "/docs/glossary", label: "Glossary" },

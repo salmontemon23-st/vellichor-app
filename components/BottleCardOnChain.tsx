@@ -6,7 +6,7 @@ import { BottlePhotoCard } from "./BottlePhotoCard";
 import { AcquirePanel } from "./AcquirePanel";
 import { PAYMENT_TOKEN_DECIMALS, PAYMENT_TOKEN_SYMBOL, type OnChainBottle } from "@/lib/contracts";
 import { fetchBottleMetadata, ipfsToHttp, type BottleMetadata } from "@/lib/ipfs";
-import { BOTTLE_CONTENT_OVERRIDES } from "@/lib/bottle-content";
+import { BOTTLE_CONTENT_OVERRIDES, FORCE_REVEALED_BOTTLE_IDS } from "@/lib/bottle-content";
 
 export type OnChainStatus = "available" | "sold-out" | "redeemed";
 
@@ -57,8 +57,12 @@ export function useBottleMetadata(metadataURI: string, bottleId?: bigint) {
   }, [metadataURI]);
 
   const override = bottleId !== undefined ? BOTTLE_CONTENT_OVERRIDES[bottleId.toString()] : undefined;
-  if (!override) return meta;
-  return { ...override, ...meta };
+  const merged = override ? { ...override, ...meta } : meta;
+
+  if (merged && bottleId !== undefined && FORCE_REVEALED_BOTTLE_IDS.has(bottleId.toString())) {
+    return { ...merged, revealAt: undefined };
+  }
+  return merged;
 }
 
 export function BottleCardOnChain({ bottle }: { bottle: OnChainBottle }) {

@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: "Vellichor — Own rare whiskey and fine wine as RWAs",
   description:
     "Vellichor is an RWA protocol for rare whiskey and fine wine, built on Robinhood Chain. Every bottle is authenticated, insured, and vaulted before a single unit is sold.",
+  verification: {
+    other: {
+      "virtual-protocol-site-verification": "9bcdb36dc83bd0b1d67d712717d384f5",
+    },
+  },
 };
 
 export default function SiteLayout({

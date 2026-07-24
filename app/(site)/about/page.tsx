@@ -22,11 +22,12 @@ const ROADMAP = [
   {
     phase: "Phase 2",
     milestone:
-      "$VELLICHOR utility token, token-gated priority access to curated drops, community governance over acquisitions",
+      "$VELL utility token, token-gated priority access to curated drops, community governance over acquisitions",
   },
   {
     phase: "Phase 3",
-    milestone: "Secondary marketplace liquidity, DeFi collateral integration",
+    milestone:
+      "Secondary marketplace liquidity, DeFi collateral integration, buyer-scoped AI agent for collateral position management",
   },
   { phase: "Phase 4", milestone: "First redemption completed" },
   {

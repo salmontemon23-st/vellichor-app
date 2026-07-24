@@ -115,8 +115,7 @@ export default function BottleDetailPage() {
         </div>
 
         <div>
-          <span className="eyebrow">Vault Unit #{bottle.bottleId.toString()}</span>
-          <h1 className="mt-2 font-display text-3xl font-normal text-ink">{bottle.name}</h1>
+          <h1 className="font-display text-3xl font-normal text-ink">{bottle.name}</h1>
 
           {meta?.description && (
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-dim">{meta.description}</p>
